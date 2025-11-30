@@ -22,6 +22,7 @@ const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3001';
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'http://localhost:3000';
 
 const app = express();
+const path = require('path');
 
 // CORS configuration
 app.use(cors({
@@ -464,20 +465,36 @@ app.post('/newOrder', authenticateToken, async (req, res)=> {
   }
 })
 
+// Serve static files from the React frontend app in production
+if (process.env.NODE_ENV === 'production') {
+  const frontendBuildPath = path.join(__dirname, '../frontend/build');
+  
+  // Serve static files from the React frontend app
+  app.use(express.static(frontendBuildPath));
+  
+  // Handle React routing, return all requests to React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`App started!! Running on port ${PORT}`);
-  if (MONGO_URI) {
-    mongoose.connect(MONGO_URI)
-      .then(() => {
-        console.log("DB connected");
-      })
-      .catch((error) => {
-        console.error("DB connection error:", error);
-        process.exit(1);
-      });
-  } else {
-    console.error("MONGO_URL environment variable is not set!");
+// Connect to MongoDB and start the server
+if (!MONGO_URI) {
+  console.error("MONGO_URL environment variable is not set!");
+  process.exit(1);
+}
+
+mongoose.connect(MONGO_URI)
+  .then(() => {
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+      console.log(`Frontend URL: ${FRONTEND_URL}`);
+      console.log(`Dashboard URL: ${DASHBOARD_URL}`);
+      console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    });
+  })
+  .catch((error) => {
+    console.error('MongoDB connection error:', error);
     process.exit(1);
-  }
-});
+  });
