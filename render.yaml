@@ -1,0 +1,59 @@
+services:
+  # Backend API Service
+  - type: web
+    name: equitrade-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3002
+      - key: MONGO_URL
+        sync: false  # Set this in Render dashboard
+      - key: JWT_SECRET
+        sync: false  # Set this in Render dashboard
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: equitrade-frontend
+          property: url
+      - key: DASHBOARD_URL
+        fromService:
+          type: web
+          name: equitrade-dashboard
+          property: url
+
+  # Frontend Landing Page Service
+  - type: web
+    name: equitrade-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: equitrade-backend
+          property: url
+      - key: REACT_APP_DASHBOARD_URL
+        fromService:
+          type: web
+          name: equitrade-dashboard
+          property: url
+
+  # Dashboard Service
+  - type: web
+    name: equitrade-dashboard
+    env: static
+    buildCommand: cd dashboard && npm install && npm run build
+    staticPublishPath: ./dashboard/build
+    envVars:
+      - key: REACT_APP_API_URL
+        fromService:
+          type: web
+          name: equitrade-backend
+          property: url
+

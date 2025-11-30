@@ -1,0 +1,89 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.nav-link {
+  margin-left: 20px;
+
+}
+
+
+footer a {
+ display: block;
+  text-decoration: none;
+  color: #6c757d;            /* muted gray - looks cleaner than inherit */
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+  
+}
+footer a:hover {
+  text-decoration: underline;
+  color: #007bff;
+}
+
+.bottom-links-list {
+  display: flex;       /* horizontal row */
+  gap: 20px;           /* spacing between items */
+  list-style: none;    /* removes bullets */
+  padding: 0;
+  margin: 30px;
+  margin-top: 20px;
+  font-size: small;
+  
+}
+
+.bottom-links-list li {
+  cursor: pointer;
+  color: #6c757d;       /* muted text */
+  transition: color 0.3s;
+}
+
+.bottom-links-list li:hover {
+  color: blue;          /* hover color */
+  text-decoration: underline;
+}
+
+
+.BottomLinks {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* center the whole list */
+  background-color: #f8f9fa; /* optional bg color */
+}
+
+#supportHero {
+  background-color: rgb(56,126, 209);
+  color: white;
+}
+
+#supportHero a{
+  color: white;
+
+}
+
+
+
+
+#supportWrapper {
+  display: flex; 
+  justify-content: space-between;
+  margin: 0 150px;
+}
+
+#supportHero input {
+    padding: 20px 50px;
+    width: 100%;
+    font-size: 20px;
+    border-radius: 10px;
+    border: none;
+}
