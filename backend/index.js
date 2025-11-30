@@ -473,7 +473,8 @@ if (process.env.NODE_ENV === 'production') {
   app.use(express.static(frontendBuildPath));
   
   // Handle React routing, return all requests to React app
-  app.get('*', (req, res) => {
+  // Use a more specific route pattern to avoid the path-to-regexp error
+  app.get(/^[^.]*$/, (req, res) => {
     res.sendFile(path.join(frontendBuildPath, 'index.html'));
   });
 }
